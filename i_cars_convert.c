@@ -5,15 +5,16 @@
 #include <sys/uio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/syslimits.h>
 #include <string.h>
 #include <err.h>
+#include <errno.h>
 
 extern char *__progname;
 extern int errno;
 extern char *optarg;
 
 #define BUFFER_SIZE 8192
+#define PATH_MAX 1024
 
 void help()
 {
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
     while ((ch = getopt(argc, argv, "m:f:h")) != -1) {
         switch (ch) {
             case 'm':
-                if (strnstr(optarg, "x", 10) != NULL) {
+                if (strstr(optarg, "x") != NULL) {
                     mask = (int)strtol(optarg, NULL, 16);
                 } else {
                     mask = atoi(optarg);
